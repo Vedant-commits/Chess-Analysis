@@ -52,7 +52,7 @@ st.plotly_chart(fig_popular_openings)
 
 # Win Rates by Opening
 
-st.header(f"Openning Success Rates for {elo_bracket} Players")
+st.header(f"Opening Success Rates for {elo_bracket} Players")
 st.write(
     """
     This chart analyzes the success rates of the top 10 chess openings based on their win rates.
