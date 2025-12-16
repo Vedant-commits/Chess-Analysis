@@ -1,3 +1,24 @@
-streamlit
-pandas
-plotly
+# Core Data Analysis
+pandas>=1.5.0
+numpy>=1.24.0
+
+# Chess Processing
+python-chess>=1.999
+
+# Visualization
+plotly>=5.14.0
+matplotlib>=3.6.0
+
+# Image Export (Optional but recommended)
+kaleido>=0.2.1
+
+# Additional Image Processing (Optional)
+pillow>=9.3.0
+
+# Jupyter Support (if using notebooks)
+jupyter>=1.0.0
+notebook>=6.5.0
+ipywidgets>=8.0.0
+
+# Date handling
+python-dateutil>=2.8.2
