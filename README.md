@@ -1,388 +1,106 @@
-# Chess Player Performance Analyzer
+Chess Player Performance Analyzer
+A comprehensive Python tool for analyzing chess games with detailed performance metrics, temporal trends, and game duration analysis.
+🚀 Quick Start
+Prerequisites
 
-A comprehensive data analysis tool for chess players to improve their game through detailed performance analytics and insights from their historical games.
+Python 3.8 or higher
+pip package manager
 
-## Table of Contents
-- [Features](#features)
-- [Installation](#installation)
-- [Usage Instructions](#usage-instructions)
-- [Data Format Specifications](#data-format-specifications)
-- [Metrics Explained](#metrics-explained)
-- [Output Files](#output-files)
-- [Troubleshooting](#troubleshooting)
-- [Examples](#examples)
+Installation
 
-## Features
+Clone the repository
 
-- **Individual Player Analysis**: Analyze any player's complete game history
-- **Performance Metrics**: Win rates, rating progression, opening success rates
-- **Visual Reports**: Interactive HTML dashboards with 6+ chart types
-- **Batch Processing**: Analyze multiple players automatically
-- **Player Comparison**: Compare performance between different players
-- **Improvement Tracking**: Identify trends and progress over time
+bashgit clone <repository-url>
+cd chess-analyzer
 
-## Installation
+Create a virtual environment (recommended)
 
-### Requirements
-- Python 3.7 or higher
-- Operating System: Windows, macOS, or Linux
-- Minimum 4GB RAM recommended for large datasets
-
-### Step 1: Clone or Download the Repository
-```bash
-git clone https://github.com/yourusername/chess-analysis.git
-cd chess-analysis
-```
-
-### Step 2: Create Virtual Environment (Recommended)
-```bash
-# Windows
+bash# On Windows
 python -m venv venv
 venv\Scripts\activate
 
-# macOS/Linux
+# On macOS/Linux
 python3 -m venv venv
 source venv/bin/activate
-```
 
-### Step 3: Install Required Libraries
-```bash
-pip install -r requirements.txt
-```
+Install required dependencies
 
-Required packages:
-- pandas>=1.3.0
-- numpy>=1.20.0
-- plotly>=5.0.0
-- python-chess>=1.0.0
-- streamlit>=1.25.0
+bashpip install -r requirements.txt
+Verifying Installation
+Run this command to verify all dependencies are installed:
+bashpython -c "import pandas, numpy, chess, plotly, matplotlib; print('✅ All core dependencies installed successfully!')"
+📦 Dependencies
+Core Requirements
 
-### Step 4: Verify Installation
-```bash
-python -c "import pandas, plotly, chess; print('Installation successful!')"
-```
+pandas (≥1.5.0): Data manipulation and analysis
+numpy (≥1.24.0): Numerical computations
+python-chess (≥1.999): PGN file processing
+plotly (≥5.14.0): Interactive visualizations
+matplotlib (≥3.6.0): Static plotting
 
-## Usage Instructions
+Optional Dependencies
 
-### Option 1: Jupyter Notebook Analysis
+kaleido (≥0.2.1): Export charts as PNG/SVG/PDF
+pillow (≥9.3.0): Image processing
+jupyter: For notebook interface
 
-1. **Launch Jupyter Notebook**
-```bash
-   jupyter notebook
-```
+🔧 Troubleshooting
+Import Errors
+If you encounter import errors, ensure all dependencies are installed:
+bashpip install --upgrade -r requirements.txt
+Kaleido Issues (for image export)
+If image export fails:
+bash# Uninstall and reinstall kaleido
+pip uninstall kaleido
+pip install kaleido==0.2.1
+Chess Module Not Found
+If python-chess import fails:
+bashpip install python-chess --upgrade
+💻 Usage
+Using Jupyter Notebook
+bashjupyter notebook chess_analyzer.ipynb
+Using Python Script
+pythonfrom chess_analyzer import ChessPlayerAnalyzer
+import pandas as pd
 
-2. **Open the Analysis Notebook**
-   - Navigate to `chess_analysis.ipynb`
-   - Click to open
-
-3. **Configure Data Source**
-   - In Cell 2, update the file path:
-```python
-   # For CSV file:
-   df = pd.read_csv('your_chess_games.csv')
-   
-   # For PGN file:
-   df = process_pgn_to_dataframe('your_games.pgn', num_games=None)
-```
-
-4. **Select Player for Analysis**
-   - Run all cells up to Section 6
-   - In Section 6, modify the player name:
-```python
-   PLAYER_NAME = "YourPlayerName"  # Replace with actual player name
-```
-
-5. **Generate Analysis**
-   - Run remaining cells
-   - Reports will be saved as `{player_name}_chess_report.html`
-
-### Option 2: Streamlit Web Application
-
-1. **Prepare Your Data**
-   - Place your chess games file as `chess_games_raw.csv` in the project directory
-
-2. **Launch Streamlit App**
-```bash
-   streamlit run streamlit_app.py
-```
-
-3. **Use the Web Interface**
-   - Browser will open automatically (or visit http://localhost:8501)
-   - Select player from dropdown menu
-   - Navigate through analysis tabs
-   - Export reports using sidebar options
-
-### Option 3: Command Line Analysis
-```python
-from chess_analysis import ChessPlayerAnalyzer
+# Load your data
+df = pd.read_csv('chess_games.csv')
 
 # Initialize analyzer
-analyzer = ChessPlayerAnalyzer('chess_games_raw.csv')
+analyzer = ChessPlayerAnalyzer(df)
 
-# List available players
-players = analyzer.get_available_players(min_games=10)
-print(players)
+# Analyze a player
+analysis = analyzer.analyze_player('PlayerName')
+Data Input Options
 
-# Analyze specific player
-analysis = analyzer.analyze_player("PlayerName")
-fig = analyzer.create_player_report("PlayerName", "output_report.html")
-```
+CSV File: Place your chess_games_raw.csv in the project directory
+PGN File: Use the process_pgn_to_dataframe() function:
 
-## Data Format Specifications
+pythondf = process_pgn_to_dataframe('your_games.pgn')
+📊 Features
 
-### Input Format: PGN Files
+Performance Analysis: Win rates, streaks, improvement trends
+Game Duration Analysis: Statistical distribution, patterns by result
+Temporal Trends: Rating progression over actual dates
+Opening Analysis: Performance by opening choice
+Export Options: HTML, PNG, SVG, PDF formats
 
-Standard PGN headers expected:
-```
-[Event "Tournament Name"]
-[Site "Location/Platform"]
-[Date "2023.01.15"]
-[Round "1"]
-[White "Player1"]
-[Black "Player2"]
-[Result "1-0"]
-[WhiteElo "1650"]
-[BlackElo "1600"]
-[ECO "B12"]
-[Opening "Caro-Kann Defense"]
-[TimeControl "300+0"]
+📁 Project Structure
+chess-analyzer/
+├── chess_analyzer.ipynb     # Main Jupyter notebook
+├── requirements.txt         # Python dependencies
+├── README.md               # This file
+├── chess_games_raw.csv    # Your chess data (not included)
+└── reports/               # Generated reports directory
+    ├── *.html            # Interactive HTML reports
+    ├── *.png             # Static image exports
+    └── batch_summary.csv # Batch analysis results
+🐛 Known Issues
 
-1. e4 c6 2. d4 d5 ... {moves}
-```
+Kaleido on M1 Macs: May require special installation
 
-**Required PGN Headers:**
-- `White` - White player's name (string)
-- `Black` - Black player's name (string)
-- `Result` - Game result: "1-0", "0-1", "1/2-1/2", or "*"
+bash   pip install kaleido --platform macosx_11_0_arm64
 
-**Optional PGN Headers:**
-- `Date` - Game date (YYYY.MM.DD format)
-- `WhiteElo` - White's rating (integer)
-- `BlackElo` - Black's rating (integer)
-- `Opening` - Opening name (string)
-- `ECO` - ECO opening code (string)
-- `TimeControl` - Time format (string)
-- `Event` - Tournament/event name (string)
+Large PGN Files: Processing may be slow for files >100MB
 
-### Input Format: CSV Files
-
-**Required CSV Columns:**
-| Column | Type | Description | Example |
-|--------|------|-------------|---------|
-| White | string | White player name | "JohnDoe" |
-| Black | string | Black player name | "JaneSmith" |
-| Result | string | Game result | "1-0" |
-
-**Optional CSV Columns:**
-| Column | Type | Description | Example |
-|--------|------|-------------|---------|
-| WhiteElo | integer/float | White's rating | 1650 |
-| BlackElo | integer/float | Black's rating | 1600 |
-| Date | string/datetime | Game date | "2023-01-15" |
-| Opening | string | Opening name | "Sicilian Defense" |
-| ECO | string | ECO code | "B90" |
-| TimeControl | string | Time control | "300+0" |
-| MoveCount | integer | Total moves | 45 |
-
-### Output Format: Processed Data
-
-The tool generates several output files:
-
-**1. chess_analysis_output.csv** - Enhanced dataset with:
-- All original columns
-- `GameNumber` - Sequential game identifier
-- `AverageElo` - Mean of both players' ratings
-
-**2. player_statistics.csv** - Summary statistics:
-- `Player` - Player name
-- `Total_Games` - Games played
-- `Win_Rate` - Win percentage
-- `Current_Rating` - Latest rating
-
-**3. {player}_analysis.csv** - Individual player data:
-- `PlayerColor` - Color played (White/Black)
-- `PlayerResult` - Result from player's perspective
-- `Opponent` - Opponent's name
-- `PlayerElo` - Player's rating for that game
-
-### Missing Data Handling
-
-| Missing Field | Default Action |
-|--------------|----------------|
-| Player names | Skip game (required) |
-| Result | Use "*" (unfinished) |
-| Date | Auto-generate sequential dates |
-| Ratings | Store as NaN |
-| Opening | Use "Unknown" |
-| Time Control | Use "Standard" |
-| Move Count | Calculate if possible, else NaN |
-
-## Metrics Explained
-
-### Basic Performance Metrics
-
-**Win Rate**
-```
-Win Rate = (Number of Wins / Total Games) × 100
-```
-Example: 48 wins in 100 games = 48% win rate
-
-**Draw Rate**
-```
-Draw Rate = (Number of Draws / Total Games) × 100
-```
-
-**Loss Rate**
-```
-Loss Rate = (Number of Losses / Total Games) × 100
-```
-
-**Points Percentage** (Tournament scoring)
-```
-Points % = ((Wins + 0.5 × Draws) / Total Games) × 100
-```
-Example: 48 wins + 20 draws in 100 games = (48 + 0.5×20)/100 = 58%
-
-### Rating Metrics
-
-**Average Elo**
-```
-Average Elo = (White Elo + Black Elo) / 2
-```
-Used to categorize game difficulty level
-
-**Rating Change**
-```
-Rating Change = Current Rating - Starting Rating
-```
-Positive = improvement, Negative = decline
-
-**Rolling Average** (10-game window)
-```
-Rolling Avg = Mean of last 10 game ratings
-```
-Smooths out rating fluctuations
-
-### Opening Performance
-
-**Opening Win Rate**
-```
-Opening Win Rate = (Wins with Opening / Games with Opening) × 100
-```
-Calculated separately for each opening
-
-**Opening Points %**
-```
-Opening Points = ((Wins + 0.5 × Draws) with Opening / Games with Opening) × 100
-```
-
-### Improvement Metrics
-
-**Quarterly Performance**
-- Games divided into 4 equal quarters (Q1-Q4)
-- Q1 = Oldest 25% of games
-- Q4 = Most recent 25% of games
-
-**Improvement Trend**
-```
-Trend = Q4 Win Rate - Q1 Win Rate
-```
-- Positive = Improving
-- Negative = Declining
-- Near zero (±2%) = Stable
-
-**Performance vs Opponent Strength**
-Games categorized by opponent rating:
-- <1200: Beginner
-- 1200-1400: Intermediate
-- 1400-1600: Advanced
-- 1600-1800: Expert
-- 1800-2000: Master
-- 2000+: Grandmaster level
-
-### Color-Specific Metrics
-
-**White/Black Win Rate**
-Calculated separately for games played as each color:
-```
-White Win Rate = (Wins as White / Games as White) × 100
-Black Win Rate = (Wins as Black / Games as Black) × 100
-```
-
-## Output Files
-
-| File | Description |
-|------|-------------|
-| `{player}_chess_report.html` | Interactive visual report |
-| `chess_analysis_output.csv` | Processed game data |
-| `player_statistics.csv` | All players summary |
-| `{player}_games.csv` | Individual player's games |
-| `error_log.txt` | Processing errors (if any) |
-
-## Troubleshooting
-
-### Common Issues and Solutions
-
-**Issue: "No games found for player"**
-- Check exact spelling of player name (case-sensitive)
-- Use `get_available_players()` to see valid names
-- Ensure player has minimum required games (default: 10)
-
-**Issue: "FileNotFoundError: chess_games_raw.csv"**
-- Ensure data file is in correct directory
-- Check file name spelling
-- For PGN files, update the file path in code
-
-**Issue: "ValueError: could not convert string to float"**
-- Check rating columns contain only numbers
-- Remove or fix non-numeric ratings
-- Tool will handle as NaN automatically
-
-**Issue: Missing rating progression chart**
-- Player may have no games with ratings
-- Check if WhiteElo/BlackElo columns exist
-- Ratings stored as text need conversion
-
-**Issue: Streamlit app won't start**
-```bash
-# Try:
-pip install --upgrade streamlit
-streamlit cache clear
-streamlit run streamlit_app.py --server.port 8502
-```
-
-## Examples
-
-### Example 1: Analyze Single Player
-```python
-analyzer = ChessPlayerAnalyzer('chess_games_raw.csv')
-analysis = analyzer.analyze_player("Magnus_Carlsen")
-
-print(f"Win Rate: {analysis['overall_stats']['win_rate']:.1f}%")
-print(f"Best Opening: {analysis['opening_analysis'].iloc[0]['opening']}")
-```
-
-### Example 2: Compare Multiple Players
-```python
-players = ["Player1", "Player2", "Player3"]
-comparison = compare_players(df, players)
-print(comparison[['Player', 'Win_Rate', 'Current_Rating']])
-```
-
-### Example 3: Batch Generate Reports
-```python
-top_players = player_stats.head(10)['Player'].tolist()
-successful, failed = batch_analyze_players(df, top_players, 'reports/')
-```
-
-## Support
-
-For issues or questions:
-1. Check the Troubleshooting section
-2. Review example notebooks in `/examples` directory
-3. Create an issue on GitHub
-4. Contact: your-email@example.com
-
-## License
-
-MIT License - Feel free to use and modify for your chess improvement journey!
+Consider using num_games parameter to limit processing
